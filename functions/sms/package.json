@@ -1,0 +1,17 @@
+{
+  "name": "sms",
+  "version": "1.0.0",
+  "description": "Lambda function that sends sms messages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sms"
+  ],
+  "author": "Francisco Rafart",
+  "license": "ISC",
+  "dependencies": {
+    "twilio": "^3.17.0"
+  }
+}
