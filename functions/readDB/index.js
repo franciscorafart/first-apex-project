@@ -6,8 +6,8 @@ exports.handle = (e,ctx,cb) => {
 
     let params = {
         Item: {
-            name: 'Francisco',
-            last_name: 'Rafart',
+            name: 'Franciscano',
+            last_name: 'Rafartiano',
             phone: '+1937833797',
         },
 

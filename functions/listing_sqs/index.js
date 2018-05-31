@@ -1,16 +1,18 @@
 const AWS = require('aws-sdk')
 AWS.config.update({region: 'us-east-2'})
+let sqs = new AWS.SQS({apiVersion:'2012-11-05'})
 
 exports.handle = (e,ctx,cb) => {
-    let sqs = new AWS.SQS({apiVersion:'2018-29-05'})
 
     var params = {
-      QueueName: 'SQS_QUEUE_NAME',
+      QueueName: 'smsapp',
+      // QueueUrl:process.env.queue_url,
       Attributes: {
-        'DelaySeconds': '00',
+        'DelaySeconds': '10',
         'MessageRetentionPeriod': '86400'
       }
     };
+
 
     sqs.createQueue(params, function(err, data) {
     //NOTE:just prints null as a result
