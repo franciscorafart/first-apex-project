@@ -1,4 +1,5 @@
 /credentials.csv
 /project.json
 /functions/sms/node_modules
+/functions/send_sqs/function.json
 /README.md
