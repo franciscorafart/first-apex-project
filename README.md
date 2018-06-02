@@ -3,7 +3,7 @@ Application to send mass sms with AWS lambdas and SQS workers and the Twilio API
 
 - Create Configuration files.
 
-For APEX you need a project.json file with your environmental variables and a function.json file for each function that requires special cinfigurations (role, timeout, for example).
+For APEX you need a project.json file with your environmental variables and a function.json file for each function that requires special configurations (role, timeout, for example).
 
 # project.json
 
