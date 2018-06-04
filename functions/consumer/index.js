@@ -39,7 +39,11 @@ function handleSQSMessage(context, callback){
                 // })
                 console.log('message',message)
             })
+            //TODO:remove this when async task
             callback(null, 'Done')
+
+            //TODO: Figure out how to handle recursively without the async
+
             // async.parallel(invocations, (err)=>{
             //     if (err) {
             //         console.error(err,err.stack)
