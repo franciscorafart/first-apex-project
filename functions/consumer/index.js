@@ -19,7 +19,21 @@ function receiveMessage(callback){
 }
 
 //TODO:Invoke lambda worker missing
-
+function invokeWorkerLambda(task, callback){
+    let params = {
+        FunctionName: 'worker',
+        InvocationType: 'Event',
+        Payload: JSON.stringify(task)
+    }
+    lambda.invoke(params, (err, data)=>{
+        if(err){
+            console.error(err, err.stack);
+            callback(err);
+        } else {
+            callback(null, data)
+        }
+    })
+}
 //
 
 function handleSQSMessage(context, callback){
