@@ -1,6 +1,7 @@
 /credentials.csv
 /project.json
 /functions/sms/node_modules
+/functions/worker/node_modules
 /functions/send_sqs/function.json
 /functions/consumer/function.json
 /README.md
