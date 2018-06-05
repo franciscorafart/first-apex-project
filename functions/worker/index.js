@@ -16,12 +16,23 @@ function work(task, cb){
     console.log(task)
 
     //TODO: do work here (send messages)
+    let client = require("twilio")(process.env.accountSid,process.env.authToken)
 
+    //TODO: extract message and phone numbers from task
+
+
+    client.messages.create({
+        body: 'Testing lambdas',
+        to: process.env.testNumber,
+        from: process.env.fromNumber,
+    }).then((message) => console.log(message.sid))
+
+    cb(null, 'Message sent!')
 
     cb();
 }
 
-exports.handler = function(event, context, callback){
+exports.handle = function(event, context, callback){
     work(event.Body, (err)=>{
         err? callback(err): deleteMessage(event.ReceiptHandle, callback)
     })
