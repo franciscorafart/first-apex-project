@@ -20,8 +20,7 @@ function work(task, cb){
 
 
     //TODO: extract message and phone numbers from task
-
-
+    
     client.messages.create({
         body: 'Testing lambdas',
         to: process.env.testNumber,

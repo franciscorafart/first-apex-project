@@ -1,7 +1,9 @@
-Application to send mass sms with AWS lambdas and SQS workers and the Twilio API.
+Application to send mass sms with AWS lambdas, SQS workers and the Twilio API. Built with APEX.
 
-
-- Create Configuration files.
+1) Download the Files
+2) Install Apex
+3) Run npm install on the functions that use npm modules
+4) Create Configuration files.
 
 For APEX you need a project.json file with your environmental variables and a function.json file for each function that requires special configurations (role, timeout, for example).
 
@@ -29,3 +31,5 @@ For APEX you need a project.json file with your environmental variables and a fu
   "timeout": 15,
   "role": "arn:your-sqs-role"
 }
+
+5) Deploy your lambdas with $apex deploy
