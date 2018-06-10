@@ -13,12 +13,9 @@ exports.handle = (e,ctx,cb) => {
 
         TableName: 'contacts'
     }
-    //TODO: read database and send result to front end
-    cb(null, 'Read data succesfully')
 
     //write into database
-    // docClient.put(params, (err, data)=> {
-    //     err? cb(err, null): cb(null, data)
-    // })
-
+    docClient.put(params, (err, data)=> {
+        err? cb(err, null): cb(null, data)
+    })
 }

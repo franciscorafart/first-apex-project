@@ -7,20 +7,17 @@ exports.handle = (e,ctx,cb) => {
     var params = {
          DelaySeconds: 10,
          MessageAttributes: {
-          "Title": {
-            DataType: "String",
-            StringValue: "The Whistler"
-           },
-          "Author": {
+          "Name": {
             DataType: "String",
             StringValue: "John Grisham"
            },
-          "WeeksOn": {
+          "Telephone": {
             DataType: "Number",
             StringValue: "6"
            }
          },
-         MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
+         //TODO: get correct message from front-end
+         MessageBody: e.message,
          QueueUrl: process.env.queue_url
         };
 

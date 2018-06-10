@@ -14,18 +14,17 @@ function deleteMessage(receiptHandle, cb){
 }
 
 function work(task, cb){
-    console.log(task)
-
-    //TODO: do work here (send messages)
-
+    console.log('This is the task: ', task)
 
     //TODO: extract message and phone numbers from task
-    
+    //Figure out how to get Attributes out of the SQS message
+
+    //TODO:uncomment to send messages
     client.messages.create({
-        body: 'Testing lambdas',
+        body: task,
         to: process.env.testNumber,
         from: process.env.fromNumber,
-    }).then((message) => console.log(message.sid))
+    }).then((message) => console.log('Message succesful: ', message.sid))
 
     // cb(null, 'Message sent!')
 
@@ -33,6 +32,7 @@ function work(task, cb){
 }
 
 exports.handle = function(event, context, callback){
+    console.log('event', event)
     work(event.Body, (err)=>{
         err? callback(err): deleteMessage(event.ReceiptHandle, callback)
     })

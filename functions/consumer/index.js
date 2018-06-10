@@ -5,7 +5,7 @@ AWS.config.update({region: process.env.aws_region})
 let sqs = new AWS.SQS({apiVersion:'2012-11-05'})
 let lambda = new AWS.Lambda({region: process.env.aws_region})
 
-//NOTE: to test this function Enable it in the Lambda Console
+//NOTE: to test this function with watcher Enable it in the Lambda Console
 
 function receiveMessage(callback){
     let params = {
@@ -21,7 +21,8 @@ function receiveMessage(callback){
 //TODO:Invoke lambda worker missing
 function invokeWorkerLambda(task, callback){
     let params = {
-        FunctionName: 'worker',
+        //NOTE: Function name is the Lambda_function_name, not the APEX_Function_name
+        FunctionName: 'first-apex-project_worker',
         InvocationType: 'Event',
         Payload: JSON.stringify(task)
     }
@@ -30,6 +31,7 @@ function invokeWorkerLambda(task, callback){
             console.error(err, err.stack);
             callback(err);
         } else {
+            console.log('data!!', data)
             callback(null, data)
         }
     })
@@ -49,9 +51,10 @@ function handleSQSMessage(context, callback){
             messages.forEach((message) =>{
                 // invocations.push((callback)=> {
                 //     //TODO: invoke worker here
+                invokeWorkerLambda(message, callback)
                 //     console.log('Invoking Worker!'+message)
                 // })
-                console.log('message',message)
+                console.log('message!!!',message)
             })
             //TODO:remove this when async task
             callback(null, 'Done')
