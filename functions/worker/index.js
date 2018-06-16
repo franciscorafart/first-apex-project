@@ -16,13 +16,13 @@ function deleteMessage(receiptHandle, cb){
 function work(task, cb){
     console.log('This is the task: ', task)
 
-    //TODO: extract message and phone numbers from task
-    //Figure out how to get Attributes out of the SQS message
+    //NOTE: parse to object to extract phone and text
+    let sms = JSON.parse(task)
 
     //TODO:uncomment to send messages
     client.messages.create({
-        body: task,
-        to: process.env.testNumber,
+        body: sms.text,
+        to: sms.phone,
         from: process.env.fromNumber,
     }).then((message) => console.log('Message succesful: ', message.sid))
 
