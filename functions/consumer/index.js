@@ -18,11 +18,17 @@ function receiveMessage(callback){
     })
 }
 
-//TODO:Invoke lambda worker missing
 function invokeWorkerLambda(task, callback){
+    let functionName;
+
+    let parsedTask = JSON.parse(task.Body)
+    console.log('parsedTask', parsedTask)
+    //TODO: make sure its reading this properties
+    parsedTask.type == 'sms'? functionName = 'first-apex-project_worker': functionName = 'first-apex-project_writeDB'
+
     let params = {
         //NOTE: Function name is the Lambda_function_name, not the APEX_Function_name
-        FunctionName: 'first-apex-project_worker',
+        FunctionName: functionName,
         InvocationType: 'Event',
         Payload: JSON.stringify(task)
     }

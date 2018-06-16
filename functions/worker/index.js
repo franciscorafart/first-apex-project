@@ -17,18 +17,16 @@ function work(task, cb){
     console.log('This is the task: ', task)
 
     //NOTE: parse to object to extract phone and text
-    let sms = JSON.parse(task)
+    let load = JSON.parse(task)
 
-    //TODO:uncomment to send messages
-    client.messages.create({
-        body: sms.text,
-        to: sms.phone,
-        from: process.env.fromNumber,
-    }).then((message) => console.log('Message succesful: ', message.sid))
+        client.messages.create({
+            body: load.text,
+            to: load.phone,
+            from: process.env.fromNumber,
+        }).then((message) => console.log('Message succesful: ', message.sid))
 
+        cb();
     // cb(null, 'Message sent!')
-
-    cb();
 }
 
 exports.handle = function(event, context, callback){

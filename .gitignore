@@ -2,6 +2,9 @@
 /project.json
 /functions/sms/node_modules
 /functions/worker/node_modules
+/functions/worker/function.json
+/functions/sms/function.json
+/functions/writeDB/function.json
 /functions/send_sqs/function.json
 /functions/consumer/function.json
 /README.md
