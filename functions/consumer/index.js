@@ -18,13 +18,27 @@ function receiveMessage(callback){
     })
 }
 
+function deleteMessage(handle){
+    let params = {
+        QueueUrl: process.env.queue_url,
+        ReceiptHandle: handle
+    };
+    sqs.deleteMessage(params, (err, data) => {
+        err? console.log(err, err.stack): console.log(data);
+    });
+}
+
 function invokeWorkerLambda(task, callback){
     let functionName;
 
     let parsedTask = JSON.parse(task.Body)
     console.log('parsedTask', parsedTask)
     //TODO: make sure its reading this properties
-    parsedTask.type == 'sms'? functionName = 'first-apex-project_worker': functionName = 'first-apex-project_writeDB'
+    parsedTask.type == 'sms'?
+        functionName = 'first-apex-project_worker':
+        parsedTask.type == 'contact'?
+            functionName = 'first-apex-project_writeDB':
+            callback('Task type Error')
 
     let params = {
         //NOTE: Function name is the Lambda_function_name, not the APEX_Function_name
@@ -38,6 +52,10 @@ function invokeWorkerLambda(task, callback){
             callback(err);
         } else {
             console.log('data!!', data)
+
+            //Delete sqs message
+            deleteMessage(task.ReceiptHandle)
+
             callback(null, data)
         }
     })
