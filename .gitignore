@@ -7,5 +7,6 @@
 /functions/writeDB/function.json
 /functions/send_sqs/function.json
 /functions/consumer/function.json
+/functions/sns_to_sms/function.json
 /README.md
 /front-end
