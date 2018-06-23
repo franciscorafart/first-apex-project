@@ -20,7 +20,7 @@ function work(task, cb){
     let load = JSON.parse(task)
 
         client.messages.create({
-            body: load.text,
+            body: load.message,
             to: load.phone,
             from: process.env.fromNumber,
         }).then((message) => console.log('Message succesful: ', message.sid))

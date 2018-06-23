@@ -7,7 +7,7 @@ const AWS = require('aws-sdk')
 
 //2. Publish SNS to triggerSMS
 exports.handle = (e,ctx,cb) => {
-    console.log('e es igual a: ', e, ' typeof: ',typeof(e), 'e.message = ', e.message)
+    console.log('e es igual a: ', e, ' typeof: ',typeof(e), 'e.message = ', e)
 
     //stringify message
     let stringifiedMessage = JSON.stringify(e)
