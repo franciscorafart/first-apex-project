@@ -38,7 +38,7 @@ function invokeWorkerLambda(task, callback){
         functionName = 'first-apex-project_worker':
         parsedTask.type == 'contact'?
             functionName = 'first-apex-project_writeDB':
-            callback('Task type Error')
+            callback('Task type Error in consumer')
 
     let params = {
         //NOTE: Function name is the Lambda_function_name, not the APEX_Function_name
