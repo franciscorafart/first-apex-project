@@ -13,11 +13,6 @@ exports.handle = (e,ctx,cb) => {
     let phone = parsedE.phone
 
     let params = {
-        // Item: {
-        //     name: 'Franciscano',
-        //     last_name: 'Rafartiano',
-        //     phone: '+1937833797',
-        // },
         Item: {
             name: name,
             last_name: lastName,
