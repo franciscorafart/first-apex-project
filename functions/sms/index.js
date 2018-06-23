@@ -13,5 +13,7 @@ exports.handle = (e,ctx,cb) => {
         from: process.env.fromNumber,
     }).then((message) => console.log(message.sid))
 
+    //TODO: Create SNS to change value in DB to Sent
+
     cb(null, 'Message sent!')
 }

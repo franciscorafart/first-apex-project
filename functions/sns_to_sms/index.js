@@ -10,12 +10,12 @@ exports.handle = (e,ctx,cb) => {
     console.log('e es igual a: ', e, ' typeof: ',typeof(e), 'e.message = ', e.message)
 
     //stringify message
-    let stringifiedMessage = JSON.stringify(e.message)
+    let stringifiedMessage = JSON.stringify(e)
 
     var sns = new AWS.SNS();
     var params = {
         Message: stringifiedMessage,
-        Subject: "Test SNS From Lambda",
+        Subject: "SNS From Lambda",
         TopicArn: "arn:aws:sns:us-east-2:812207345852:triggersms"
     };
 
