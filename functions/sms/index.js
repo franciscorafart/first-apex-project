@@ -11,7 +11,7 @@ exports.handle = (e,ctx,cb) => {
     let messLoad = JSON.parse(e.Records[0].Sns.Message)
 
     //TODO: take from-phone from new twilio-phonenumbers table
-    
+
     if (messLoad.telephones){
         messLoad.telephones.forEach(phone =>{
             //TODO: loop through numbers to queue in Twilio
@@ -22,11 +22,11 @@ exports.handle = (e,ctx,cb) => {
                 from: process.env.fromNumber,
             }).then((message) => console.log(message.sid))
         })
-        cb(null, 'Message sent!')
     } else {
         cb(null, 'Error in messLoad.telephone')
     }
-
+    cb(null, 'Message sent!')
+    
     //TODO: Create SNS to change value in DB to Sent
 
 }
