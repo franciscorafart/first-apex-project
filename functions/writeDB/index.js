@@ -1,17 +1,17 @@
 console.log('loading')
 const AWS = require('aws-sdk')
 const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
+const uuidv1 = require('uuid/v1')
+
 
 exports.handle = (e,ctx,cb) => {
 
-
     let parsedE
     //NOTE: This is sloppy, find better way to check what to parse
-    if(e.Records){
+    if(e.Records){//this is for SNS triggers
         console.log('e es igual a ', e.Records[0].Sns)
         parsedE = JSON.parse(e.Records[0].Sns.Message)
-        console.log('In parsing!')
-    }else{
+    }else{ //This is for consumer
         console.log('e',e)
         parsedE = JSON.parse(e.Body)
     }
@@ -35,7 +35,7 @@ exports.handle = (e,ctx,cb) => {
     if(tableName == 'messages'){
         params['Item']['message'] = mess
         params['Item']['sent'] = false
-        params['Item']['uuid'] = '3243234' // //a uuid for messages
+        params['Item']['uuid'] = uuidv1() // //a uuid for messages
     }
 
     console.log('params',params)

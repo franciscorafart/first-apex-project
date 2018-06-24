@@ -1,13 +1,10 @@
 console.log('loading')
 const AWS = require('aws-sdk')
 
-//NOTE:This function will
+const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
 
-//1. Read contacts from dynamo DB
-
-//2. Publish SNS to triggerSMS
-exports.handle = (e,ctx,cb) => {
-    console.log('e es igual a: ', e, ' typeof: ',typeof(e), 'e.message = ', e)
+let send_sns = (e,ctx,cb) =>{
+    //2. Publish SNS to triggerSMS
 
     //stringify message
     let stringifiedMessage = JSON.stringify(e)
@@ -28,4 +25,30 @@ exports.handle = (e,ctx,cb) => {
             ctx.done(null, data);
         }
     });
+}
+
+exports.handle = (e,ctx,cb) => {
+    console.log('e es igual a: ', e, ' typeof: ',typeof(e), 'e.message = ', e)
+
+    //1. TODO: Read contacts from dynamo DB
+    let scanningParameters = {
+        TableName: 'contacts',
+        Limit: 2000
+    }
+
+    docClient.scan(scanningParameters, (err,data)=> {
+
+        if(err){
+            cb(err, null)
+        } else{
+            console.log('data in function', data)
+            //TODO:
+            //1.scan data base and take phone numbers out and somehow send it
+
+            //Can I send multiple sns from here?
+
+            //2. call function to send sns
+            send_sns(e,ctx,cb)
+        }
+    })
 }
