@@ -2,7 +2,7 @@ Application to send mass sms with AWS lambdas, SQS workers and the Twilio API. B
 
 1) Download the Files
 2) Install Apex (apex.run) and configure
-3)
+3) 
 4) Create Configuration files.
 5) Create corresponding IAM roles for each function in AWS
     a. consumer -> LambdaBasicExecution
