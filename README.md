@@ -1,10 +1,11 @@
-Application to send mass sms with AWS lambdas, SQS workers and the Twilio API. Built with APEX.
+Application to send mass sms with AWS lambdas, SNS, SQS and the Twilio API. Built with APEX.
 
 1) Download the Files
 2) Install Apex (apex.run) and configure
-3) 
+3) Create IAM Roles
+    TODO: specify roles and permissions
 4) Create Configuration files.
-5) Create corresponding IAM roles for each function in AWS
+5) Assign corresponding IAM roles for each function in AWS in function.json file
     a. consumer -> LambdaBasicExecution
     b. readDB -> LambdaBasicExecution, DynamoDB read permissions (scan in particular)
     c. send_sqs -> SQS send message
@@ -13,9 +14,15 @@ Application to send mass sms with AWS lambdas, SQS workers and the Twilio API. B
     f. worker -> LambdaBasicExecution, SQS
     g. writeDB -> LambdaBasicExecution, DynamoDB write
 
+# function.js -> in each lambda folder create a function.js file and attach the role it will use.
+
+    {
+      "timeout": 15,
+      "role": "arn:your-role"
+    }
 
 6) Create DynamoDB with three tables: 'contacts', 'messages' and 'twilionumbers'
-7) Create API gateway in AWS with POST methods that trigger the following lambdas: sns_to_sms, write_db and send_sqs
+7) Create API gateway in AWS with POST methods that trigger the following lambdas: sns_to_sms, writeDB, send_sqs, readDB
 
 For APEX you need a project.json file with your environmental variables and a function.json file for each function that requires special configurations (role, timeout, for example).
 
@@ -35,11 +42,4 @@ For APEX you need a project.json file with your environmental variables and a fu
       "fromNumber": "from-number",
       "queue_url": "your-sqs-url"
   }
-}
-
-# function.js (for send_sqs function)
-
-{
-  "timeout": 15,
-  "role": "arn:your-sqs-role"
 }
