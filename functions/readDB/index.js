@@ -4,16 +4,6 @@ const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
 
 exports.handle = (e,ctx,cb) => {
 
-    // let params = {
-    //     Item: {
-    //         name: 'Franciscano',
-    //         last_name: 'Rafartiano',
-    //         phone: '+1937833797',
-    //     },
-    //
-    //     TableName: 'contacts'
-    // }
-
     let scanningParameters = {
         TableName: 'contacts',
         Limit: 2000
