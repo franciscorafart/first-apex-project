@@ -40,7 +40,7 @@ exports.handle = (e,ctx,cb) => {
                 twilioNumbers.push(ph['number'])
             }
             console.log('twilioNumbers',twilioNumbers)
-            
+
             //Call function to send messages
             if(messLoad.telephones && messLoad.message && twilioNumbers)
                 sendMessages(messLoad.telephones, twilioNumbers, messLoad.message, cb)

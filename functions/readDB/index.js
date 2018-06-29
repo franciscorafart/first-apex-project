@@ -12,6 +12,4 @@ exports.handle = (e,ctx,cb) => {
     docClient.scan(scanningParameters, (err,data)=> {
         err? cb(err, null): cb(null,data)
     })
-
-    // cb(null, 'Read data succesfully')
 }

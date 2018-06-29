@@ -11,7 +11,7 @@ exports.handle = (e,ctx,cb) => {
     if(e.Records){//this is for SNS triggers
         console.log('e es igual a ', e.Records[0].Sns)
         parsedE = JSON.parse(e.Records[0].Sns.Message)
-    }else{ //This is for sqs consumer
+    } else { //This is for sqs consumer
         console.log('e',e)
         parsedE = JSON.parse(e.Body)
     }

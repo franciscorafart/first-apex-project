@@ -105,9 +105,5 @@ function handleSQSMessage(context, callback){
 
 exports.handle = (e,ctx,cb) => {
     //Lambda that is executed periodicall to consume the SQS queue messages
-    // let message = "Testing the Api Consumer"
-
-    //TODO: Consumer task here
     handleSQSMessage(ctx, cb)
-    // cb(null, message)
 }

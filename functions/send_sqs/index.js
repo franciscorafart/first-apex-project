@@ -22,14 +22,6 @@ exports.handle = (e,ctx,cb) => {
          QueueUrl: process.env.queue_url
         };
 
-// sqs.sendMessage(params, function(err, data) {
-//   if (err) {
-//     console.log("Error", err);
-//   } else {
-//     console.log("Success", data.MessageId, data);
-//   }
-// });
-
     sqs.sendMessage(params,(err,data)=>{
         err? cb(err, null): cb(null, data)
     });

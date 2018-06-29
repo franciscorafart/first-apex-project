@@ -5,24 +5,6 @@ const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
 
 let send_sns = (e,ctx,cb, dataSNS) =>{
 
-    //structure e
-    // {
-    //     type: 'sms',
-    //     message: 'Testing passing telephone list',
-    //     phone: '+18578003797',
-    //     name: 'Steve',
-    //     lastName: 'Harris',
-    //     lastNames: [ undefined, undefined, undefined, undefined, undefined, undefined ],
-    //     names: [ 'Francisco', 'Trying', 'Funciona', 'Testing', 'Rafael', 'John' ],
-    //     telephones: [
-    //         '+18578003797',
-    //         '+2123343234',
-    //         '+12343234934',
-    //         '+943023434',
-    //         '+12049583939',
-    //         '+1092848903'
-    //     ]
-    // }
     //2. Publish SNS to triggerSMS
 
     let telephones = dataSNS.Items.map(m => m.phone)
