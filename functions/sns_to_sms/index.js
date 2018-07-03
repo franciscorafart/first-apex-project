@@ -4,7 +4,7 @@ const AWS = require('aws-sdk')
 const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
 const uuidv1 = require('uuid/v1')
 
-let send_sns = (e,ctx,cb, dataSNS) =>{
+let send_sns = (e,ctx,cb, dataSNS, last) =>{
 
     //2. Publish SNS to triggerSMS
 
@@ -38,8 +38,10 @@ let send_sns = (e,ctx,cb, dataSNS) =>{
             console.error('error publishing to SNS');
             ctx.fail(err);
         } else {
-            console.info('message published to SNS');
-            ctx.done(null, data);
+            console.info('message batch published to SNS');
+            if(last){
+                ctx.done(null, data);
+            }
         }
     });
 }
@@ -59,20 +61,27 @@ exports.handle = (e,ctx,cb) => {
             cb(err, null)
         } else{
 
-            //TODO: divide in batches of 10 and do for loop
-            // let partialData = []
-            // data.Items.forEach((item, idx) => {
-            //     partialData.push(item)
-            //     if((idx+1)%10==0){
-            //         send_sns(e,ctx,cb,partialData)
-            //         partialData = []
-            //     }
-            // })
+            //NOTE: divide in batches of 10 and do for loop
+            let partialData = {Items: []}
+            let last = false
 
-            //send sns with contacts table data
-            send_sns(e,ctx,cb,data)
+            data.Items.forEach((item, idx) => {
 
-            //TODO: make the callback here
+                partialData.Items.push(item)
+
+                if((idx+1)%2==0 || idx+1==data.Items.length){ //testin with 2
+                    console.log('partialData', partialData)
+                    data.Items.length==idx+1? last = true: last=false;
+                    send_sns(e,ctx,cb,partialData,last)
+                    partialData = {Items: []}
+                }
+            })
+
+            //send sns with contacts table data (all data in one)
+            // send_sns(e,ctx,cb,data)
+
+            //TODO: make the callback here if sending by batches
+            // ctx.done(null, data);
         }
     })
 }
