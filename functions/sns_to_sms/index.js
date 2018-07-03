@@ -2,6 +2,7 @@ console.log('loading')
 const AWS = require('aws-sdk')
 
 const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
+const uuidv1 = require('uuid/v1')
 
 let send_sns = (e,ctx,cb, dataSNS) =>{
 
@@ -14,6 +15,12 @@ let send_sns = (e,ctx,cb, dataSNS) =>{
     e['lastNames'] = lastNames
     e['names'] = names
     e['telephones'] = telephones
+    e['uuid'] = []
+
+    //Create uids for each message
+    names.forEach(n =>{
+        e['uuid'].push(uuidv1())
+    })
 
     console.log('e inside send_sns', e)
     //stringify message
@@ -51,8 +58,21 @@ exports.handle = (e,ctx,cb) => {
         if(err){
             cb(err, null)
         } else{
+
+            //TODO: divide in batches of 10 and do for loop
+            // let partialData = []
+            // data.Items.forEach((item, idx) => {
+            //     partialData.push(item)
+            //     if((idx+1)%10==0){
+            //         send_sns(e,ctx,cb,partialData)
+            //         partialData = []
+            //     }
+            // })
+
             //send sns with contacts table data
-            send_sns(e,ctx,cb, data)
+            send_sns(e,ctx,cb,data)
+
+            //TODO: make the callback here
         }
     })
 }

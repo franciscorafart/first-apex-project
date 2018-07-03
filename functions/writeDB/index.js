@@ -45,6 +45,9 @@ exports.handle = (e,ctx,cb) => {
 
     //Log messages to messages DB
     if(tableName == 'messages'){
+
+        thisUuid = parsedE.uuid
+
         parsedE.names.forEach((name, idx)=>{
             params['Item'] = {
                 name: name,
@@ -52,7 +55,7 @@ exports.handle = (e,ctx,cb) => {
                 phone: parsedE.telephones[idx],
                 message: mess,
                 sent: false,
-                uuid: uuidv1() //a uuid for messages
+                uuid: thisUuid[idx] //a uuid for messages
             }
 
             docClient.put(params, (err, data)=> {
