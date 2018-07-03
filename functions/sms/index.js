@@ -14,7 +14,12 @@ let sendMessages = (telephones, twilioNumbers, message, cb) => {
             body: message,
             to: phone,
             from: twilioNumbers[fromIdx],
-        }).then((message) => console.log(message.sid))
+        }).then(message => {
+            console.log(message.sid)
+
+            //write back to DB as sent
+            
+        })
     })
 
     cb(null, 'Message sent!')
