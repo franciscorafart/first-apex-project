@@ -35,13 +35,12 @@ let send_sns = (e,ctx,cb, dataSNS, last) =>{
 
     sns.publish(params, (err, data) => {
         if(err) {
-            console.error('error publishing to SNS');
+            console.error('error publishing batch to SNS');
             ctx.fail(err);
         } else {
-            console.info('message batch published to SNS');
-            if(last){
+            console.info('message batch published to SNS', data);
+            if(last)
                 ctx.done(null, data);
-            }
         }
     });
 }
@@ -69,8 +68,8 @@ exports.handle = (e,ctx,cb) => {
 
                 partialData.Items.push(item)
 
-                if((idx+1)%2==0 || idx+1==data.Items.length){ //testin with 2
-                    console.log('partialData', partialData)
+                if((idx+1)%2==0 || idx+1==data.Items.length){ //testing with 2
+
                     data.Items.length==idx+1? last = true: last=false;
                     send_sns(e,ctx,cb,partialData,last)
                     partialData = {Items: []}
@@ -79,9 +78,6 @@ exports.handle = (e,ctx,cb) => {
 
             //send sns with contacts table data (all data in one)
             // send_sns(e,ctx,cb,data)
-
-            //TODO: make the callback here if sending by batches
-            // ctx.done(null, data);
         }
     })
 }
