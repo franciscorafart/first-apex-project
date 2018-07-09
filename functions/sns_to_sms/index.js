@@ -2,9 +2,10 @@ console.log('loading')
 const AWS = require('aws-sdk')
 
 const docClient = new AWS.DynamoDB.DocumentClient({region: 'us-east-2'})
-const uuidv1 = require('uuid/v1')
+const uuidv1 = require('uuid/v1') //timestamp
+const uuidv4 = require('uuid/v4') //random
 
-let send_sns = (e,ctx,cb, dataSNS, last) =>{
+let send_sns = (e,ctx,cb, dataSNS, last, all_batch_uuid) =>{
 
     //2. Publish SNS to triggerSMS
 
@@ -12,11 +13,13 @@ let send_sns = (e,ctx,cb, dataSNS, last) =>{
     let names = dataSNS.Items.map(m => m.name)
     let lastNames = dataSNS.Items.map(m => m.last_name)
 
+    //TODO: include batch identifier that i sent back to the front end
+
     e['lastNames'] = lastNames
     e['names'] = names
     e['telephones'] = telephones
     e['uuid'] = []
-
+    e['all_batch_uuid'] = all_batch_uuid
     //Create uids for each message
     names.forEach(n =>{
         e['uuid'].push(uuidv1())
@@ -38,9 +41,15 @@ let send_sns = (e,ctx,cb, dataSNS, last) =>{
             console.error('error publishing batch to SNS');
             ctx.fail(err);
         } else {
-            console.info('message batch published to SNS', data);
-            if(last)
+            console.info('message sub-batch published to SNS', data);
+            //TODO: keep track of which ones went through and which ones don't
+            //at the moment only sending the last one
+
+            if(last){
+                //send back uuid to the front end to identify
+                data['all_batch_uuid'] = all_batch_uuid
                 ctx.done(null, data);
+            }
         }
     });
 }
@@ -64,6 +73,9 @@ exports.handle = (e,ctx,cb) => {
             let partialData = {Items: []}
             let last = false
 
+            //uid for whole message, not only the individual receipients
+            let all_batch_uuid=uuidv4()
+
             data.Items.forEach((item, idx) => {
 
                 partialData.Items.push(item)
@@ -71,7 +83,15 @@ exports.handle = (e,ctx,cb) => {
                 if((idx+1)%2==0 || idx+1==data.Items.length){ //testing with 2
 
                     data.Items.length==idx+1? last = true: last=false;
-                    send_sns(e,ctx,cb,partialData,last)
+                    send_sns(
+                        e,
+                        ctx,
+                        cb,
+                        partialData,
+                        last,
+                        all_batch_uuid
+                    )
+
                     partialData = {Items: []}
                 }
             })
