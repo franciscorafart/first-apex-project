@@ -1,0 +1,4 @@
+{
+  "timeout": 30,
+  "role": "arn:aws:iam::812207345852:role/first-apex-project_lambda_function"
+}
