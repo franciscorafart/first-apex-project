@@ -8,7 +8,6 @@ const uuidv4 = require('uuid/v4') //random
 let send_sns = (e,ctx,cb, dataSNS, last, all_batch_uuid) =>{
 
     //2. Publish SNS to triggerSMS
-
     let telephones = dataSNS.Items.map(m => m.phone)
     let names = dataSNS.Items.map(m => m.name)
     let lastNames = dataSNS.Items.map(m => m.last_name)
@@ -25,7 +24,7 @@ let send_sns = (e,ctx,cb, dataSNS, last, all_batch_uuid) =>{
         e['uuid'].push(uuidv1())
     })
 
-    console.log('e inside send_sns', e)
+    // console.log('e inside send_sns', e)
     //stringify message
     let stringifiedMessage = JSON.stringify(e)
 
@@ -55,7 +54,9 @@ let send_sns = (e,ctx,cb, dataSNS, last, all_batch_uuid) =>{
 }
 
 exports.handle = (e,ctx,cb) => {
-    console.log('e es igual a: ', e, ' typeof: ',typeof(e), 'e.message = ', e)
+
+    //Extract unchecked numbers
+    let uncheckedNums = e.unchecked.map(m => m.phone)
 
     //1.Read contacts from dynamo DB
     let scanningParameters = {
@@ -69,7 +70,7 @@ exports.handle = (e,ctx,cb) => {
             cb(err, null)
         } else{
 
-            //NOTE: divide in batches of 10 and do for loop
+            //NOTE: divide in batches of 10 (partialData) and do for loop
             let partialData = {Items: []}
             let last = false
 
@@ -78,9 +79,13 @@ exports.handle = (e,ctx,cb) => {
 
             data.Items.forEach((item, idx) => {
 
-                partialData.Items.push(item)
+                //NOTE: adding only item not unchecked
+                let idxUnchecked = uncheckedNums.indexOf(item.phone)
+                if (idxUnchecked==-1)
+                    partialData.Items.push(item)
 
-                if((idx+1)%2==0 || idx+1==data.Items.length){ //testing with 2
+                //Reach 10 or end of data
+                if((idx+1)%10==0 || idx+1==data.Items.length){ //testing with 2
 
                     data.Items.length==idx+1? last = true: last=false;
                     send_sns(
@@ -91,7 +96,7 @@ exports.handle = (e,ctx,cb) => {
                         last,
                         all_batch_uuid
                     )
-
+                    //empty partialData
                     partialData = {Items: []}
                 }
             })

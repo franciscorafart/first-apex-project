@@ -49,8 +49,7 @@ let sendMessages = (telephones, twilioNumbers, message, uuid, cb) => {
 }
 
 exports.handle = (e,ctx,cb) => {
-
-    console.log('e is: ',e.Records[0].Sns)
+    console.log('e.Records[0].Sns is: ',e.Records[0].Sns)
 
     //parse it and extract phone number and SMS message
     let messLoad = JSON.parse(e.Records[0].Sns.Message)
