@@ -12,7 +12,6 @@ exports.handle = (e, ctx, cb) => {
         }
     }
     docClient.delete(params, (err, data)=>{
-        err? cb(err, null): cb(null, data)
+        err? cb(err, null): cb(null, 'Contact deleted')
     })
-    // cb(null, 'Ready!')
 }
