@@ -1,5 +1,3 @@
-require('dotenv').config({ silent: true });
-
 const jwksClient = require('jwks-rsa');
 const jwt = require('jsonwebtoken');
 const util = require('util');
@@ -71,7 +69,7 @@ const authenticate = (params) => {
 let data;
 
 // Lambda function index.handler - thin wrapper around authenticate
-module.exports.handler = async (event) => {
+module.exports.handle = async (event) => {
   try {
     data = await authenticate(event);
   }

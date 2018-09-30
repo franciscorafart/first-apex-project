@@ -9,5 +9,6 @@
 /functions/consumer/function.json
 /functions/sns_to_sms/function.json
 /functions/authorizer/function.json
+/functions/authorizer/node_modules
 /README.md
 /front-end
