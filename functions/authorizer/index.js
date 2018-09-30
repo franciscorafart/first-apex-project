@@ -69,6 +69,7 @@ const authenticate = (params) => {
 let data;
 
 // Lambda function index.handler - thin wrapper around authenticate
+// NOTE: make sure to set manually Node 8 in AWS for this function, Apex doesn't support it yet
 module.exports.handle = async (event) => {
   try {
     data = await authenticate(event);
